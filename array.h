@@ -1,3 +1,12 @@
+/*
+Members of the group:
+Афанасьев Филипп
+Лысенко Павел
+Свихнушина Екатерина
+Степанов Игорь
+Туркин Роман
+*/
+
 #define ARRAY void *
 #define DATA void *
 #define INDEX long

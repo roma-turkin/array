@@ -16,8 +16,7 @@ struct node{
 };
 /*
     В функции create_array мы выделяем память под один узел - root. В root->index лежит -1 - так мы отличаем корень дерева от всех остальных
-узлов. (полагается, что это нормальный Си-шный массив с индексами от 0 и до скольки угодно.
-ARRAY определен в array.h, ARRAY == void *
+узлов. (полагается, что это нормальный Си-шный массив с индексами от 0 и до скольки угодно).
 */
 ARRAY create_array(){
     struct node * root;
@@ -34,41 +33,44 @@ ARRAY create_array(){
 с корня спускаемся по узлам дерева до нижнего уровня, в который мы вставляем элемент. Если элементов еще нет, вставляем лист в левую ветку.
 */
 int insert(ARRAY array,INDEX input_index,DATA input_data){
-	struct node * root;
-	root = (struct node *)array;
-    struct node * leaf;
+	struct node * root;				//Забираем array в свою переменную root, которую не жалко если что попортить
+	root = (struct node *)array;	
+    struct node * leaf;				//Данная переменная и будет новым элементом массива
     leaf = malloc(sizeof(struct node));
-    if (leaf==NULL){
+    if (leaf==NULL){				//Ошибка выделения памяти
         goto insert_error; 
+    }
+    if (input_index < 0){
+    	goto insert_error;			//Нельзя вставлять элементы с отрицательными индексами! Не положено!
     }
     leaf->index = input_index;
     leaf->data = input_data;
-    leaf->right = 0;
-    leaf->left = 0;
-    if (!root->left){
-        root->left = leaf;
+    leaf->right = NULL;
+    leaf->left = NULL;
+    if (!root->left){				//root - просто корень, он не является элементом массива. Первый элемент массива лежит слева от root.
+        root->left = leaf;			//Дальше начиная с первого элемента дерево и начинает рост
         return 0;
     }
-    struct node * current; //Current node 
-    current = root->left;
-    int leaf_inserted = 0; //Флаг, который подымется, когда лист будет вставлен на место.
+    struct node * current;  //Current node, узел, в который мы спустились в результате последней итерации
+    current = root->left;	//Начальное состояние - первый элемент. Наличие этого элемента гарантировано операциями сверху.
+    int leaf_inserted = 0;  //Флаг, который подымется, когда лист будет вставлен на место.
     while (!leaf_inserted){ 
-    	if (current->index == leaf->index){//Новый элемент массива попадает на место рута
-    		leaf->left = current->left;
-    		leaf->right = current->right;
-    		root->left = leaf;
+    	if (current->index == leaf->index){ //Новый элемент массива попадает на место первого. Вообще в алгоритме полагается, что ситуация
+    		leaf->left = current->left;		//равных индексов у текущего элемента и вставляемого возможна только для первого элемента.
+    		leaf->right = current->right;	//В этом случае получается вставить элемент, не прибегая к дополнительным переменным.
+    		root->left = leaf;				//На данном шаге первый лист просто подменяется вставляемым, а после память освобождается.
     		free(current);
     		leaf_inserted = 1;
     		continue;
     	}
     	//Во всех остальных ответвлениях программы текущий индекс не может равняться тому, который мы вставляем.
-    	if (current->index > leaf->index){ //Вставляем слева
-    		if (!current->left){//Слева нет элемента, сюда и надо вставить лист
+    	if (current->index > leaf->index){ 	//Индекс нового элемента меньше, чем индекс текущего. Смотрим в левую ветку дерева.
+    		if (!current->left){			//Слева нет элемента, сюда и надо вставить лист
     			current->left = leaf;
     			leaf_inserted = 1;
     			continue;
     		}
-    		if (current->left->index == leaf->index){//Индекс левого элемента совпадает с индексом листа
+    		if (current->left->index == leaf->index){//Левый элемент есть, и его индекс совпадает с индексом листа
     			leaf->left = current->left->left;
     			leaf->right = current->left->right;
     			free(current->left);
@@ -76,11 +78,10 @@ int insert(ARRAY array,INDEX input_index,DATA input_data){
     			leaf_inserted = 1;
     			continue;
     		}
-    		current = current->left; //Слева от текущего элемента лежит элемент с индексом, не равным индексу вставляемого листа.
-    		continue;
+    		current = current->left; //Слева от текущего элемента лежит элемент с индексом, не равным индексу нового элемента.
     	}
-    	if (current->index < leaf->index){ //Вставляем справа
-    		if (!current->right){//Справа пусто, можно вставлять
+    	if (current->index < leaf->index){ //Вставляем справа. Все то же самое, что и для левой ветки, только справа
+    		if (!current->right){
     			current->right = leaf;
     			leaf_inserted = 1;
     			continue;
@@ -102,26 +103,29 @@ int insert(ARRAY array,INDEX input_index,DATA input_data){
 }
 
 DATA get(ARRAY array, INDEX index){
+	if (index < 0){
+		return NULL;    				//Нет у нас элементов с отрицательными индексами, нет, не было и не будет
+	}
 	struct node * current;
-	current = (struct node *) array;
-	if (!current->left){ //Массив пуст
+	current = (struct node *) array;	//Начинаем обход с корня.
+	if (!current->left){ 				//Массив пуст, т.е. левая ветка root никуда не ведет
 		return NULL; 
 	} else{
-		current = current->left;
+		current = current->left;		//Первый элемент есть. Начинаем обход.
 	}
-	int completed = 0;
-	while (1){
-		if (current->index == index){
+	//int completed = 0;
+	while (1){ //Цикл бесконечный, так как в результате обхода дерева должно вернуться какое-то значение, и функция завершит работу.
+		if (current->index == index){ //Нашли искомый элемент. Возвращаем его же.
 			return current->data;
 		}
-		if (current->index > index && current->left){
+		if (current->index > index && current->left){//Искомый индекс меньше, чем текущий. Отправляемся в левую ветку.
 			current = current->left;
 			continue;
 		}
 		if (current->index > index && !current->left){
-			return NULL; //Такого элемента в массиве нет
+			return NULL; 							//Искомый индекс меньше, чем текущий, и слева пусто. Нет такого элемента.
 		}
-		if (current->index < index && current->right){
+		if (current->index < index && current->right){//Та же история с правой веткой.
 			current = current->right;
 			continue;
 		}
@@ -130,16 +134,28 @@ DATA get(ARRAY array, INDEX index){
 		}
 	}
 }
+/*
+С помощью функции destroy_array мы рекурсивно проходим по всем узлам дерева и освобождаем занятую узлами память. 
+*/
+
 int destroy_array(ARRAY array){
-	struct node * left, *right;
-	left = array->left;
-	right = array->right;
-	if (left){
-		destroy_array(left);
-		free(left);
+	if (!array){
+		return -1; //Нам скормили NULL
+	}
+	struct node * left, *right,*root;
+	root = (struct node *) array;
+	left = root->left;
+	right = root->right;
+	if (left){					//Спускаемся только в те ветки, где что-то есть. Там имеет смысл освобождать что-либо
+		destroy_array(left);	//Ну а здесь зарыта вся рекурсия.
+		free(left);				//После того, как все элементы слева от текущего элемента освобождены, можно освобождать и текущий.
 	}
 	if (right){
 		destroy_array(right);
 		free(right);
 	}
+	if (root->index == -1){
+		free(root);
+	}
+	return 0;
 }

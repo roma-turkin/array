@@ -2,13 +2,33 @@
 #include "../array.h"
 int main(){
     ARRAY array = create_array();
-    int a = 1;
-    int b = 2;
-    int c = 3;
-    insert(array,1,&a);
-    insert(array,2,&b);
-    insert(array,3,&c);
-    int * d; 
-    d = get(array,2);
-    printf("%d\n",*d);
+    int a[10],i;
+    for (i = 0; i < 9; i++){
+        a[i] = i;
+        insert(array,i,&a[i]);
+    }
+    int *d;
+    for (i = 0; i < 20; i++){
+        d = get(array,i);
+        if (d){
+            printf("Element #%d is %d\n",i,*d);
+        }
+        else{
+            printf("No such element:%d\n",i);
+        }
+    }
+    i = -1;
+    d = get(array,i);
+    if (d){
+        printf("Element %d is %d\n",i,*d);
+    }
+    destroy_array(array);
+    printf("%p\n",array);
+    if (array){
+        for (i = 0; i < 20; i++)
+        {
+         d = get(array,i);
+         if (d) printf("%d %d\n",i,*d);
+        }
+    }
 }

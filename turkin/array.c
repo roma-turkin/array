@@ -131,5 +131,15 @@ DATA get(ARRAY array, INDEX index){
 	}
 }
 int destroy_array(ARRAY array){
-	
+	struct node * left, *right;
+	left = array->left;
+	right = array->right;
+	if (left){
+		destroy_array(left);
+		free(left);
+	}
+	if (right){
+		destroy_array(right);
+		free(right);
+	}
 }

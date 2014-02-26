@@ -100,3 +100,36 @@ int insert(ARRAY array,INDEX input_index,DATA input_data){
 	insert_error:
     return -1;
 }
+
+DATA get(ARRAY array, INDEX index){
+	struct node * current;
+	current = (struct node *) array;
+	if (!current->left){ //Массив пуст
+		return NULL; 
+	} else{
+		current = current->left;
+	}
+	int completed = 0;
+	while (1){
+		if (current->index == index){
+			return current->data;
+		}
+		if (current->index > index && current->left){
+			current = current->left;
+			continue;
+		}
+		if (current->index > index && !current->left){
+			return NULL; //Такого элемента в массиве нет
+		}
+		if (current->index < index && current->right){
+			current = current->right;
+			continue;
+		}
+		if (current->index < index && !current->right){
+			return NULL;
+		}
+	}
+}
+int destroy_array(ARRAY array){
+	
+}

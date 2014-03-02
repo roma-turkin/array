@@ -1,34 +1,24 @@
 #include <stdio.h>
 #include "../array.h"
-int main(){
-    ARRAY array = create_array();
-    int a[10],i;
-    for (i = 0; i < 9; i++){
-        a[i] = i;
-        insert(array,i,&a[i]);
-    }
-    int *d;
-    for (i = 0; i < 20; i++){
-        d = get(array,i);
-        if (d){
-            printf("Element #%d is %d\n",i,*d);
-        }
-        else{
-            printf("No such element:%d\n",i);
-        }
-    }
-    i = -1;
-    d = get(array,i);
-    if (d){
-        printf("Element %d is %d\n",i,*d);
-    }
-    destroy_array(array);
-    printf("%p\n",array);
-    if (array){
-        for (i = 0; i < 20; i++)
-        {
-         d = get(array,i);
-         if (d) printf("%d %d\n",i,*d);
-        }
-    }
+#include <assert.h>
+int main()
+{
+//Тест #1: создание массива, вставка элементов, их получение, удаление массива
+    ARRAY array = create_array();                       assert(array != NULL);   //Создание массива
+    int el = 1;                        
+    int result = insert(array,0,&el);                   assert(result == 0);     //Вставка элемента el в array[0]
+    int * res_el;
+    res_el = get(array,0);                              assert(res_el != NULL);  //"Вытаскивание" элемента 0 из массива. Если элемента нет, это хреново
+                                                        assert(el == *res_el);   //"Вытаскивание" чего-то другого - тоже не айс
+    result = destroy_array(array);                      assert(result != -1);
+    result = destroy_array(array);                      assert(result == -1);    //Должно возвращаться -1. Мы уже почистили этот массив. 
+    array = create_array();                             assert(array != NULL);   //Массив должен создаться без проблем
+    //Все то же самое, что и выше - должно работать нормально
+    el = 10;
+    result = insert(array,1,&el);                       assert(result == 0);     //Вставка элемента el в array[1]
+    res_el = get(array,1);                              assert(res_el != NULL);  //"Вытаскивание" элемента 0 из массива. Если элемента нет, это хреново
+                                                        assert(el == *res_el);   //"Вытаскивание" чего-то другого - тоже не айс
+    result = destroy_array(array);                      assert(result != -1);
+    result = destroy_array(array);                      assert(result == -1);    //Должно возвращаться -1. Мы уже почистили этот массив. 
+
 }

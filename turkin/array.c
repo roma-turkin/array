@@ -7,6 +7,7 @@ right соответствует большему индексу, left - мен�
 
 #include "../array.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 struct node{
     INDEX index;
@@ -140,22 +141,28 @@ DATA get(ARRAY array, INDEX index){
 
 int destroy_array(ARRAY array){
 	if (!array){
-		return -1; //Нам скормили NULL
+		return -1; 				//Нам скормили NULL
 	}
-	struct node * left, *right,*root;
+	struct node * left, *right, *root;
 	root = (struct node *) array;
+	if (!root->left)
+	{
+		return -1;
+	}
 	left = root->left;
 	right = root->right;
-	if (left){					//Спускаемся только в те ветки, где что-то есть. Там имеет смысл освобождать что-либо
+	if (left)
+	{					//Спускаемся только в те ветки, где что-то есть. Там имеет смысл освобождать что-либо
 		destroy_array(left);	//Ну а здесь зарыта вся рекурсия.
 		free(left);				//После того, как все элементы слева от текущего элемента освобождены, можно освобождать и текущий.
 	}
-	if (right){
+	if (right)
+	{
 		destroy_array(right);
 		free(right);
 	}
-	if (root->index == -1){
-		free(root);
-	}
+	root->left = NULL;
+	root->right = NULL;
+	free(root);
 	return 0;
 }

@@ -1,42 +1,101 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 #include "../array.h"
 
-const int ERR = 1;
+struct tree
+{
+	INDEX index;
+	DATA data;
+	struct tree * next;
+};
 
 ARRAY create_array() 
 {
-	void* arr = (void*) calloc(0, sizeof(void));
-	return (arr != NULL) ? arr : NULL;
+	struct tree * root;
+	root = malloc(sizeof(struct tree));
+	root->index = -1;
+	root->data = NULL;
+	root->next = NULL;
+	return (root != NULL) ? root : NULL;
 }
 
 int insert(ARRAY array, INDEX index, DATA data) 
 {
-	if (DATA == NULL)
+	if ( index < 0 )
+		return -1;
+	struct tree * leaf;
+	leaf = malloc(sizeof(struct tree));
+	if ( !leaf )
+		return -1;
+	leaf->index = index;
+	leaf->data = data;
+	leaf->next = NULL;
+
+	struct tree * root;
+	root = (struct tree *) array;
+	if ( !(root->next) )
 	{
-		if ( sizeof(array) < (index + 1) * sizeof(DATA) ) return ERR;  
-		*(array + index * sizeof(DATA)) = NULL;
+		root->next = leaf;
 		return 0;
 	}
 
-	if ( sizeof(array) < (index + 1) * sizeof(DATA) )
-		realloc(array, (index + 1) * sizeof(DATA));
-
-	memcpy( *(array + index * sizeof(DATA)), (const void*)data, sizeof(DATA) ); 
+	struct tree * current;
+	current = root->next;
+	while (1)
+	{
+		if ( !(current->next) )
+		{
+			current->next = leaf;
+			return 0;
+		}
+		else
+		{
+			current = current->next;
+			continue;
+		}
+	}
+	
 	return 0;
 }
 
 DATA get(ARRAY array, INDEX index) 
 {
-	assert(array);
-	if ( sizeof(array) < (index + 1) * sizeof(DATA) ) return NULL;
- 
-	return *(array + index * sizeof(DATA));
+	if ( index < 0 || !(array) )
+		return -1;
+	
+	struct tree * current;
+	current = (struct tree *) array;
+	current = current->next;
+	
+	while (1)
+	{
+		if (current->index == index)
+			return current->data;
+		else if ( current->next )
+		{
+			current = current->next;
+			continue;
+		}
+		else
+			return NULL;		
+	}
 }
 
 int destroy_array(ARRAY array) 
 {
-	if ( !(array) ) return -1;
+	if ( !(array) ) 
+		return NULL;
 
-	free(array);
+	struct tree * root;
+	root = (struct tree *) array;
+	if ( !(root->next) )
+		return NULL;
+	else
+	{
+		destroy_array(root->next);
+		free(root->next);
+	}
+	root->next = NULL;
+	free(root);
+	return 0;
 }

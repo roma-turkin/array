@@ -166,3 +166,8 @@ int destroy_array(ARRAY array){
 	free(root);
 	return 0;
 }
+
+void balance_tree(struct node * element)
+{
+	
+}

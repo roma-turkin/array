@@ -35,10 +35,7 @@ int main()
     for (i = 0; i < 100; i++)
     {
         num[i] = rand() % 100;
-        //printf("%f\n",num[i]);
-        //printf("%d\n",i);
         result = insert(array,i,&num[i]);               assert(result == 0);
-        //printf("%d\n",i);
         if (max_index < i) max_index = i;
     }
     float * element;
@@ -65,4 +62,38 @@ int main()
                                                         assert(*prev <= *element);   //Если это условие не выполнено, то массив не был нормально отсортирован.
     }
     result = destroy_array(array);                      assert(result != -1);
+//Тест #3. Работа с несколькими массивами.
+    ARRAY array1 = create_array();						assert(array != NULL);
+    array = create_array();								assert(array != NULL);
+    for (i = 0; i < 100; i++)
+    {
+        num[i] = rand() % 100;
+        result = insert(array1,i,&num[i]);               assert(result == 0);
+    }
+    array = array1; //Ох-хо-хо, а я извращенец
+    for (i = 0; i < 100; i++)
+    {
+    	element = get(array,i);
+    	prev = get(array1,i);							 assert(prev == element);
+    }
+    result = destroy_array(array1);						 assert(result != -1);
+    result = destroy_array(array);						 assert(result == -1);
+//Тест #4. Большие числа. Очень большие.
+    array = create_array();
+    long long index,k;
+    /*
+    float big_num = 1239.761210;
+    for (k = 0; k < 100001; k++)
+    {
+    	result = insert(array,k,&big_num);				assert(result == 0);
+    	//printf("%lld\n",k);
+    }
+    int time1 = time();
+    element = get(array,100000);						
+    int time2 = time();
+    printf("%d\n",time2-time1);
+    */
+
+    result = destroy_array(array);
+
 }

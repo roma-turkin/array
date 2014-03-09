@@ -27,6 +27,7 @@ int main()
     result = insert(array,-1,&el);                      assert(result != 0);     //Ожидается ошибка. Нет отрицательных индексов.
     res_el = get(array,-1);                             assert(res_el == NULL);  //То же
     result = destroy_array(array);                      assert(result != 0);     //Ожидается ошибка. В массив мы ничего не положили.
+
 //Тест #2: сортировка массива. Задача: ввести массив, отсортировать и убедиться, что он отсортирован.
     array = create_array();                             assert(array != NULL); 
     srand(time(NULL));
@@ -70,7 +71,7 @@ int main()
         num[i] = rand() % 100;
         result = insert(array1,i,&num[i]);               assert(result == 0);
     }
-    array = array1; //Ох-хо-хо, а я извращенец
+    array = array1; 
     for (i = 0; i < 100; i++)
     {
     	element = get(array,i);
@@ -78,22 +79,34 @@ int main()
     }
     result = destroy_array(array1);						 assert(result != -1);
     result = destroy_array(array);						 assert(result == -1);
-//Тест #4. Большие числа. Очень большие.
+ 
+//Тест #4. Испытание дерева на прочность. Списки вряд ли пострадают.
     array = create_array();
-    long long index,k;
-    /*
-    float big_num = 1239.761210;
-    for (k = 0; k < 100001; k++)
+    num[1] = 1;
+    num[2] = 2;
+    float number = 3;
+    float * result_number;
+    result = insert(array,3,&num[1]);					 assert(result == 0);
+    result = insert(array,1,&num[2]);					 assert(result == 0);
+    result_number = get(array,3);						 assert(*result_number == 1);
+    result_number = get(array,1);						 assert(*result_number == 2);
+    result = insert(array,2,&number);					 assert(result == 0);
+    result_number = get(array,2);						 assert(*result_number == 3);
+    result = insert(array,0,&number);					 assert(result == 0);
+    result_number = get(array,0);						 assert(*result_number == 3);
+    result = insert(array,4,&number);					 assert(result == 0);
+    result = insert(array,4,&num[2]);					 assert(result == 0);
+    result_number = get(array,4);						 assert(*result_number == 2);
+    result = insert(array,5,&number);					 assert(result == 0);
+    result = insert(array,3,&num[2]);					 assert(result == 0);
+    for (i = 0; i < 10; i++)
     {
-    	result = insert(array,k,&big_num);				assert(result == 0);
-    	//printf("%lld\n",k);
+    	result_number = get(array, i);
+    	if (result_number)
+    	{
+    		printf("%d %0.0f\n",i,*result_number);
+    	}
     }
-    int time1 = time();
-    element = get(array,100000);						
-    int time2 = time();
-    printf("%d\n",time2-time1);
-    */
-
-    result = destroy_array(array);
+    result = destroy_array(array);						 
 
 }

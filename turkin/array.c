@@ -163,7 +163,7 @@ int destroy_array(ARRAY array){
 	}
 	root->left = NULL;
 	root->right = NULL;
-	free(root);
+	//free(root);
 	return 0;
 }
 

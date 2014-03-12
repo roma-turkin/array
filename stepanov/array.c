@@ -43,25 +43,30 @@ int insert(ARRAY array, INDEX index, DATA data)
 	current = root->next;
 	while (1)
 	{
-		if ( !(current->next) )
+		if (current->index == index)
 		{
-			current->next = leaf;
+			current->data = data;
 			return 0;
 		}
-		else
+		else if ( current->next )
 		{
 			current = current->next;
 			continue;
 		}
+		else
+		{
+			current->next = leaf;
+			return 0;
+		}
 	}
 	
-	return 0;
+	return -1;
 }
 
 DATA get(ARRAY array, INDEX index) 
 {
 	if ( index < 0 || !(array) )
-		return -1;
+		return NULL;
 	
 	struct tree * current;
 	current = (struct tree *) array;
@@ -84,18 +89,15 @@ DATA get(ARRAY array, INDEX index)
 int destroy_array(ARRAY array) 
 {
 	if ( !(array) ) 
-		return NULL;
+		return -1;
 
 	struct tree * root;
 	root = (struct tree *) array;
 	if ( !(root->next) )
-		return NULL;
+		free(root);
 	else
-	{
 		destroy_array(root->next);
-		free(root->next);
-	}
-	root->next = NULL;
-	free(root);
+	//root->next = NULL;
+	//free(root);
 	return 0;
 }

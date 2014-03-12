@@ -6,7 +6,8 @@ Members of the group:
 Степанов Игорь
 Туркин Роман
 */
-
+#ifndef _ARRAY_H_
+#define _ARRAY_H_
 #define ARRAY void *
 #define DATA void *
 #define INDEX long
@@ -23,3 +24,4 @@ DATA get(ARRAY, INDEX);
 
 int destroy_array(ARRAY);
 //-1 if there is no such array
+#endif

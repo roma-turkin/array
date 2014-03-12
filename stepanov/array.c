@@ -97,7 +97,5 @@ int destroy_array(ARRAY array)
 		free(root);
 	else
 		destroy_array(root->next);
-	//root->next = NULL;
-	//free(root);
 	return 0;
 }

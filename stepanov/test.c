@@ -10,28 +10,29 @@ void quickSort(ARRAY*, long, long);
 int main(int argc, char *argv[])
 {
     int result;
-	/* Test #1 */
-	int el = 1, * get_el;
-	ARRAY array = create_array();
-	assert( array != NULL );
-	result = insert(array, 0, &el);
-	assert( result == 0 );
-	get_el = (int *) get(array, 0);
-	assert( el == *get_el );
-	result = destroy_array(array);
-	assert( result != -1 );
+    /* Test #1 */
+    int el = 1, * get_el;
+    ARRAY array = create_array();
+    assert( array != NULL );
+    result = insert(array, 0, &el);
+    assert( result == 0 );
+    get_el = (int *) get(array, 0);
+    assert( el == *get_el );
+    result = destroy_array(array);
+    assert( result != -1 );
 
-	/* Test #2 */
-	array = create_array();
+    /* Test #2 */
+    array = create_array();
     assert(array != NULL); 
     srand(time(NULL));
     int i;
     long N = 10;
-    float num[N];
+    float num;
     for (i = 0; i < N; i++)
     {
-        num[i] = rand() % 100;
-        result = insert(array, i, &num[i]);
+        num = rand() % 100;
+        printf("%f \n", num);
+        result = insert(array, i, &num);
         assert( result == 0 );
     }
     float * element;
@@ -43,13 +44,14 @@ int main(int argc, char *argv[])
     {
         prev = (float *)get(array, i-1);
         element = (float *)get(array, i);
+        printf("%f <-> %f \n", *prev, *element);
         assert( *prev <= *element );
     }
 
     result = destroy_array(array); 
     assert( result != -1 );
 
-	return 0;
+    return 0;
 }
 
 void quickSort(ARRAY* s_array, long first, long last)

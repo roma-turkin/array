@@ -33,7 +33,7 @@ ARRAY create_array(){
 где хранится информация. Логика работы такова - заполняем некоторый лист дерева "leaf" значениями из аргументов. Затем последовательно начиная
 с корня спускаемся по узлам дерева до нижнего уровня, в который мы вставляем элемент. Если элементов еще нет, вставляем лист в левую ветку.
 */
-int insert(ARRAY array,INDEX input_index,DATA input_data){
+int insert(ARRAY array,INDEX input_index,DATA input_data){	
 	struct node * root;				//Забираем array в свою переменную root, которую не жалко если что попортить
 	root = (struct node *)array;	
     struct node * leaf;				//Данная переменная и будет новым элементом массива
@@ -145,7 +145,7 @@ int destroy_array(ARRAY array){
 	}
 	struct node * left, *right, *root;
 	root = (struct node *) array;
-	if (!root->left)
+	if (root->index == -1 && !root->left)
 	{
 		return -1;
 	}
@@ -156,7 +156,7 @@ int destroy_array(ARRAY array){
 		destroy_array(left);	//Ну а здесь зарыта вся рекурсия.
 		free(left);				//После того, как все элементы слева от текущего элемента освобождены, можно освобождать и текущий.
 	}
-	if (right)
+	if (right)	
 	{
 		destroy_array(right);
 		free(right);

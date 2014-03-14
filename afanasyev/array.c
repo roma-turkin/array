@@ -76,7 +76,7 @@ void * create_array()
 	if (nad == 10000) return NULL;        //Coz of casting problems (zhirno ne budet?)
 	if (nad % 10 == 0)
 	{
-		buf = (array *) realloc( (void *) ad, sizeof(struct array) * (nad + 10));
+		buf = (struct array *) realloc( (void *) ad, sizeof(struct array) * (nad + 10));
 		if (buf == NULL) return NULL; else ad = buf;
 	}
 
@@ -100,6 +100,7 @@ int insert(void * arr, long ind, void * data)
 {
 	int ar = (int) arr;
 	struct Node * el = ad[ar].ptr;
+	struct Node * newel;
 
 	if (ind < 0) return -1;
 	if (nad - 1 < ar) return -1; else
@@ -124,7 +125,7 @@ int insert(void * arr, long ind, void * data)
 		return 0;
 	}
 
-jmp:    struct Node * newel = (struct Node *) malloc(sizeof(struct Node));
+jmp:    newel = (struct Node *) malloc(sizeof(struct Node));
 	if (newel == NULL) return -1;
 	newel -> index = ind;
 	newel -> data = data;
@@ -160,11 +161,11 @@ void * get(void * arr, long ind)
 	return el -> data;
 }
 
-void remove(struct Node * el)              //Recursive removing of a branch
+void remove_branch(struct Node * el)        //Recursive removing of a branch
 {
 	if (el == NULL) return;
-	remove(el -> left);
-	remove(el -> right);
+	remove_branch(el -> left);
+	remove_branch(el -> right);
 	free(el);
 }
 
@@ -173,7 +174,7 @@ int destroy_array(void * arr)
 	int ar = (int) arr;
 	if (nad - 1 < ar) return -1; else
 		if (ad[ar].exists == 0) return -1;
-	remove(ad[ar].ptr);
+	remove_branch(ad[ar].ptr);
 	ad[ar].exists = 0;
 	return 0;
 }

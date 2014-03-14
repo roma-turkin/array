@@ -10,7 +10,6 @@ void main()
 	ARRAY a3;
 	ARRAY a[30];
 	long m[100];
-	randomize;
 
 	a1 = create_array();
 	a2 = create_array();
@@ -35,7 +34,7 @@ void main()
 
 	for (p=0; p<30; p++)
 	{
-		m[p] = random(1000);
+		m[p] = rand() % 1000;
 		printf("%d ", insert(a3, m[p], (void *) p));
 	}
 	printf("\n");

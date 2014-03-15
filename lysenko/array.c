@@ -1,4 +1,4 @@
-#include "array.h"
+#include "../array.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -23,7 +23,9 @@ ARRAY create_array(){
 DATA get(ARRAY arr, INDEX x)
 {
     struct elem * root = (struct elem *) arr;
-    if ((root == NULL) || (x == (root -> key))) 
+    if (root == NULL)
+        return NULL;
+    if (x == (root -> key)) 
         return (root -> value);
     if (x < root-> key)
         return get(root -> left_child, x);

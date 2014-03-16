@@ -15,21 +15,24 @@ struct array                     //Array descriptor
 {
 	struct Node * ptr;
 	char exists;             //Indication of destroyed array
-	long nel;                //Number of elements in this array
+	long nel;                //Number of elements in this array (not in use now)
 };
 
 struct array * ad;               //The main pointer!
 int nad = 0;                     //Number of arrays
 char balancing = 0;              //Pss, guy! Do u need some balancing?
+char waiting = 0;                //Ehm...
 struct Node * targ;              //Target node for inserting
-//1 more var: target for balancing
+struct Node * btarg;             //Target node for balancing
+struct Node * root;              //Previous node for btarg
+
 
 char find(long ind, struct Node * el)       //Weird recursive function...
 {                                           //I don't understand
 	if (ind == el -> index)             //how it is working...
-	{                                   //And I don't use it now...
-		targ = el;                  //I will need it later...
-		return 0;                   //Maybe.......
+	{
+		targ = el;
+		return 0;
 	}
 	if (ind < el -> index)
 		if (el -> left != NULL)
@@ -37,14 +40,15 @@ char find(long ind, struct Node * el)       //Weird recursive function...
 			if (find(ind, el -> left) == 1)
 			{
 				el -> ldep ++;
-				return 1;
+				goto check;
 			}
+			else return 0;
 		}
 		else
 		{
 			targ = el;
 			el -> ldep ++;
-			return 1;
+			goto check;
 		}
 	if (ind > el -> index)
 		if (el -> right != NULL)
@@ -52,28 +56,100 @@ char find(long ind, struct Node * el)       //Weird recursive function...
 			if (find(ind, el -> right) == 1)
 			{
 				el -> rdep ++;
-				return 1;
+				goto check;
 			}
+			else return 0;
 		}
 		else
 		{
 			targ = el;
 			el -> rdep ++;
-			return 1;
+			goto check;
 		}
 
-	//Here I need checking of ldep - rdep to run balancing
-
-	return 0;
+check:  if ((el -> ldep - el -> rdep) * (el -> ldep - el -> rdep) > 4)
+	{
+		balancing = 1;        //Choose highest node with
+		btarg = el;           //abs(rdep - ldep) > 2
+		waiting = 0;
+	}
+	else if (balancing == 1 && waiting == 0)
+	{
+		waiting = 1;
+		root = el;
+	}
+	return 1;
 }
 
+struct Node * balance(struct Node * el, struct Node * root)
+{
+	char dirrt = 1, direl = 1;                    //1 - left node, 2 - right node
+	int n = el -> rdep;                   	      //Number of nodes in brunch being transferred
+	struct Node * go = el -> left;
+	struct Node * newroot;
+
+	if (root != NULL)
+		if (root -> right == el) dirrt = 2;   //Direction of disbalanced node from root
+	if (el -> rdep > el -> ldep)                  //Direction of larger weight from el
+	{
+		direl = 2;
+		n = el -> ldep;
+		go = el -> right;
+	}
+	n++;
+
+	if (root != NULL)
+		if (dirrt == 1) root -> left = go; else root -> right = go;
+	else newroot = go;
+	//Attaching overweighted branch to root element
+
+	while ((go -> left != NULL && direl == 2) || (go -> right != NULL && direl == 1))
+	{
+		if (direl == 2)                //Search for utmost node
+		{                              //in overweighted branch
+			go -> ldep += n;
+			go = go -> left;
+		}
+		else
+		{
+			go -> rdep += n;
+			go = go -> right;
+		}
+	}
+
+	if (direl == 2)                        //Attach light branch
+	{                                      //to that node
+		go -> left = el;
+		go -> ldep += n;
+		el -> rdep = 0;
+		el -> right = NULL;
+		go = el -> left;
+		if (go != NULL)
+			if ((go -> ldep - go -> rdep) * (go -> ldep - go -> rdep) > 4)
+				balance(go, el);
+	}
+	else
+	{
+		go -> right = el;
+		go -> rdep += n;
+		el -> ldep = 0;
+		el -> left = NULL;
+		go = el -> right;
+		if (go != NULL)
+			if ((go -> ldep - go -> rdep) * (go -> ldep - go -> rdep) > 4)
+				balance(go, el);
+	}
+
+	if (root == NULL) return newroot;
+	return NULL;
+}
 
 void * create_array()
 {
 	struct array * buf;
 
 	if (nad == 0) ad = NULL;
-	if (nad == 10000) return NULL;        //Coz of casting problems (zhirno ne budet?)
+	if (nad == 10000) return NULL;        //Coz of casting issues (zhirno ne budet?)
 	if (nad % 10 == 0)
 	{
 		buf = (struct array *) realloc( (void *) ad, sizeof(struct array) * (nad + 10));
@@ -108,16 +184,8 @@ int insert(void * arr, long ind, void * data)
 
 	if (el == NULL) goto jmp;       //Empty array
 
-	//I have to change the next cycle to recursive function
-	//to be able to change ways' depth correctly.
-
-	while (el -> index != ind)
-	{
-		if (el -> index > ind)
-			if (el -> left != NULL) el = el -> left; else break;
-		if (el -> index < ind)
-			if (el -> right != NULL) el = el -> right; else break;
-	}
+	find(ind, el);
+	el = targ;
 
 	if (el -> index == ind)         //Element already exists
 	{
@@ -137,6 +205,15 @@ jmp:    newel = (struct Node *) malloc(sizeof(struct Node));
 	if (el == NULL) ad[ar].ptr = newel; else
 		if (el -> index > ind) el -> left = newel;
 			else el -> right = newel;
+
+	if (balancing == 1)             //Launching balancing
+	{
+		if (waiting == 1) balance(btarg, root);
+			else ad[ar].ptr = balance(btarg, NULL);
+		waiting = 0;
+		balancing = 0;
+	}
+
 	return 0;
 }
 

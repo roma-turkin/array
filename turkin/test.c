@@ -11,8 +11,9 @@ int main()
 //Тест #1: создание массива, вставка элементов, их получение, удаление массива
     ARRAY array = create_array();        if (array == NULL)  ERROR     //Создание массива
     int el = 1;                        
-    int result = insert(array,0,&el);    if (result != 0)    ERROR     //Вставка элемента el в array[0]
     int * res_el;
+    res_el = get(array,10);				 if (res_el != NULL) ERROR
+    int result = insert(array,0,&el);    if (result != 0)    ERROR     //Вставка элемента el в array[0]
     res_el = get(array,0);               if (res_el == NULL) ERROR     //"Вытаскивание" элемента 0 из массива. Если элемента нет, это хреново
                                          if (el != *res_el)  ERROR     //"Вытаскивание" чего-то другого - тоже не айс
     result = destroy_array(array);       if (result == -1)   ERROR
@@ -111,7 +112,7 @@ int main()
     {
     	double_array[i] = (float)(rand() % 10000)/100;
     }
-    for (i = 0; i < 100000; i++)
+    for (i = 0; i < 90; i++)
     {
     	int index = rand() % 100;
     	int value = rand() % 100; //Индекс некоего элемента из double_array
@@ -119,6 +120,10 @@ int main()
     	element = get(array,index);						   
     	if (element != &double_array[value]) ERROR //Оно конечно наивно полагать, что за 2 операции что-то изменится, но вдруг...
     }
+	for (i = 0; i < 110; i++)
+	{
+		element = get(array,i);
+	}
     result = destroy_array(array);		if (result == -1) ERROR
     return result_of_running;
 

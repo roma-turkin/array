@@ -111,7 +111,7 @@ int main()
     {
     	double_array[i] = (float)(rand() % 10000)/100;
     }
-    for (i = 0; i < 10000; i++)
+    for (i = 0; i < 100000; i++)
     {
     	int index = rand() % 100;
     	int value = rand() % 100; //Индекс некоего элемента из double_array
@@ -121,4 +121,5 @@ int main()
     }
     result = destroy_array(array);		if (result == -1) ERROR
     return result_of_running;
+
 }

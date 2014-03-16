@@ -1,8 +1,8 @@
 #! /bin/bash
-
+# gcc -fprofile-arcs -ftest-coverage svikhnushina/array.c turkin/test.c 
 rm error_log
 rm output_log
-gcc turkin/array.c turkin/test.c -o tt 	   		 2>error_log
+gcc turkin/array.c turkin/test.c -o tt 	   		     2>error_log
 ./tt                                                 1>output_log
 RESULT=$?
 if [ "$RESULT" -ne 0 ]

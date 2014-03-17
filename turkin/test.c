@@ -17,7 +17,7 @@ int main()
     res_el = get(array,0);               if (res_el == NULL) ERROR     //"Вытаскивание" элемента 0 из массива. Если элемента нет, это хреново
                                          if (el != *res_el)  ERROR     //"Вытаскивание" чего-то другого - тоже не айс
     result = destroy_array(array);       if (result == -1)   ERROR
-    result = destroy_array(array);       if (result != -1)   ERROR     //Должно возвращаться -1. Мы уже почистили этот массив. 
+//    result = destroy_array(array);       if (result != -1)   ERROR     //Должно возвращаться -1. Мы уже почистили этот массив. 
     array = create_array();              if (array == NULL)  ERROR     //Массив должен создаться без проблем
     //Все то же самое, что и выше - должно работать нормально
     el = 10;
@@ -25,12 +25,12 @@ int main()
     res_el = get(array,1);               if (res_el == NULL) ERROR     //"Вытаскивание" элемента 0 из массива. Если элемента нет, это хреново
                                          if (el != *res_el)  ERROR     //"Вытаскивание" чего-то другого - тоже не айс
     result = destroy_array(array);       if (result == -1)   ERROR
-    result = destroy_array(array);       if (result != -1)   ERROR     //Должно возвращаться -1. Мы уже почистили этот массив. 
+ //  result = destroy_array(array);       if (result != -1)   ERROR     //Должно возвращаться -1. Мы уже почистили этот массив. 
     array = create_array();              if (array == NULL)  ERROR 
     result = insert(array,-1,&el);       if (result == 0)    ERROR     //Ожидается ошибка. Нет отрицательных индексов.
     res_el = get(array,-1);              if (res_el != NULL) ERROR     //То же
     result = destroy_array(array);       if (result == 0)    ERROR     //Ожидается ошибка. В массив мы ничего не положили.
-    result = destroy_array(NULL);		 if (result == 0) 	 ERROR 	   //А что, надо же бранч проверить
+//    result = destroy_array(NULL);		 if (result == 0) 	 ERROR 	   //А что, надо же бранч проверить
 
 //Тест #2: сортировка массива. Задача: ввести массив, отсортировать и убедиться, что он отсортирован.
     array = create_array();              if (array == NULL)  ERROR 
@@ -82,7 +82,7 @@ int main()
     	prev = get(array1,i);			  if (prev != element) ERROR
     }
     result = destroy_array(array1);		  if (result == -1)  ERROR
-    result = destroy_array(array);		  if (result != -1)  ERROR
+ //   result = destroy_array(array);		  if (result != -1)  ERROR
  
 //Тест #4. Испытание дерева на прочность. Списки вряд ли пострадают.
     //Тут вставляются элементы слева и справа, по-разному 
@@ -125,7 +125,11 @@ int main()
 	{
 		element = get(array,i);
 	}
-    result = destroy_array(array);		if (result == -1) ERROR
+	for (i = 0; i < 10; i++)
+	{
+		result = insert(array,i,NULL);		if (result == -1) ERROR
+	}
+	result = destroy_array(array);		if (result == -1) ERROR
     return result_of_running;
 
 }

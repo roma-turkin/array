@@ -135,9 +135,8 @@ DATA get(ARRAY array, INDEX index){
 		}
 	}
 }
-/*
-С помощью функции destroy_array мы рекурсивно проходим по всем узлам дерева и освобождаем занятую узлами память. 
-*/
+
+//С помощью функции destroy_array мы рекурсивно проходим по всем узлам дерева и освобождаем занятую узлами память. 
 
 int destroy_array(ARRAY array){
 	if (!array){
@@ -147,7 +146,8 @@ int destroy_array(ARRAY array){
 	root = (struct node *) array;
 	if (root->index == -1 && !root->left)
 	{
-		return -1;
+        free(root);
+		return 0;
 	}
 	left = root->left;
 	right = root->right;
@@ -161,6 +161,7 @@ int destroy_array(ARRAY array){
 		destroy_array(right);
 		free(right);
 	}
+//    free(root);
 	root->left = NULL;
 	root->right = NULL;
 	return 0;

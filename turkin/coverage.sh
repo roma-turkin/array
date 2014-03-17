@@ -6,6 +6,5 @@ gcc --coverage -fprofile-arcs -ftest-coverage array.c test.c
 DIRECTORY=$(pwd)
 lcov --capture --directory $DIRECTORY --output-file coverage.info
 genhtml coverage.info --output-directory out
-rm a.out
 rm *.gc*
 rm *.info

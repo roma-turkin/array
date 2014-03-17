@@ -9,6 +9,7 @@ int main()
 {
     int result_of_running = 0;
 //Тест #1: создание массива, вставка элементов, их получение, удаление массива
+
     ARRAY array = create_array();        if (array == NULL)  ERROR     //Создание массива
     int el = 1;                        
     int * res_el;
@@ -34,8 +35,9 @@ int main()
 
 //Тест #2: сортировка массива. Задача: ввести массив, отсортировать и убедиться, что он отсортирован.
     array = create_array();              if (array == NULL)  ERROR 
+    int j,i;
     srand(time(NULL));
-    int max_index = -1,i;
+    int max_index = -1;
     float num[100];
     for (i = 0; i < 100; i++)
     {
@@ -46,7 +48,6 @@ int main()
     float * element;
     // Cортировка. Без извращений. Просто пузырьком.
     float * prev, * cur, * tmp;
-    int j;
     for (i = 0; i < 100; i++)
     {
         for (j = 1; j < 100; j++)
@@ -67,24 +68,8 @@ int main()
                                          if (!(*prev <= *element)) ERROR   //Массив не отсортирован нормально .
     }
     result = destroy_array(array);       if (result == -1)   ERROR
-//Тест #3. Работа с несколькими массивами.
-    ARRAY array1 = create_array();		 if (array == NULL)  ERROR
-    array = create_array();				 if (array == NULL)  ERROR
-    for (i = 0; i < 100; i++)
-    {
-        num[i] = rand() % 100;
-        result = insert(array1,i,&num[i]); if (result != 0)  ERROR
-    }
-    array = array1; 
-    for (i = 0; i < 100; i++)
-    {
-    	element = get(array,i);
-    	prev = get(array1,i);			  if (prev != element) ERROR
-    }
-    result = destroy_array(array1);		  if (result == -1)  ERROR
- //   result = destroy_array(array);		  if (result != -1)  ERROR
  
-//Тест #4. Испытание дерева на прочность. Списки вряд ли пострадают.
+//Тест #3. Испытание дерева на прочность. Списки вряд ли пострадают.
     //Тут вставляются элементы слева и справа, по-разному 
     array = create_array();
     num[1] = 1;
@@ -106,7 +91,8 @@ int main()
     result = insert(array,3,&num[2]);	if (result != 0)     	 ERROR
 
     result = destroy_array(array);      if (result == -1)     	 ERROR
-//Тест #5. Внесем немного случайности
+
+//Тест #4. Внесем немного случайности
     array = create_array();
     float double_array[100];
     for (i = 0; i < 100; i++)
@@ -130,6 +116,7 @@ int main()
 		result = insert(array,i,NULL);		if (result == -1) ERROR
 	}
 	result = destroy_array(array);		if (result == -1) ERROR
+
     return result_of_running;
 
 }

@@ -37,7 +37,7 @@ int insert(ARRAY array,INDEX input_index,DATA input_data){
 	struct node * root;				//Забираем array в свою переменную root, которую не жалко если что попортить
 	root = (struct node *)array;	
     struct node * leaf;				//Данная переменная и будет новым элементом массива
-    leaf = malloc(sizeof(struct node));
+    leaf = (struct node *)malloc(sizeof(struct node));
     if (leaf==NULL){				//Ошибка выделения памяти
         goto insert_error; 
     }
@@ -100,6 +100,7 @@ int insert(ARRAY array,INDEX input_index,DATA input_data){
     }
     return 0;
 	insert_error:
+    free(leaf);
     return -1;
 }
 
@@ -143,7 +144,7 @@ int destroy_array(ARRAY array){
 		return -1; 				//Нам скормили NULL
 	}
 	struct node * left, *right, *root;
-	root = (struct node *) array;
+    root = (struct node *) array;
 	if (root->index == -1 && !root->left)
 	{
         free(root);
@@ -161,8 +162,9 @@ int destroy_array(ARRAY array){
 		destroy_array(right);
 		free(right);
 	}
-//    free(root);
-	root->left = NULL;
-	root->right = NULL;
+	//root->left = NULL;
+	//root->right = NULL;
+    if (root->index == -1) free(root);
+    root = NULL;
 	return 0;
 }

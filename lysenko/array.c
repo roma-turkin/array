@@ -132,8 +132,10 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         {
             y -> value = x -> value;
             y -> key = x -> key;
-            y -> left_child = NULL;
-            y -> right_child = NULL;
+            //y -> left_child = NULL;
+            //y -> right_child = NULL;
+            y -> left_child = x -> left_child;
+            y -> right_child = x -> right_child;
             free(x);
             return 0;
         }

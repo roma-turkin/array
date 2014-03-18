@@ -69,7 +69,6 @@ DATA get(ARRAY array, INDEX index)
 	
 	struct node * current;
 	current = (struct node *) array;
-	current = current->next;
 	
 	while (1)
 	{

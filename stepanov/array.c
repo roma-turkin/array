@@ -41,14 +41,6 @@ int insert(ARRAY array, INDEX index, DATA data)
 		root->next = leaf;
 		return 0;
 	}
-		
-	current = root->next;
-	while (1)
-	{
-		if ( current->next )
-			current = current->next;
-		else break;
-	}
 	
 	current = root->next;
 	while (1)
@@ -95,14 +87,11 @@ int destroy_array(ARRAY array)
 
 	struct node * root;
 	root = (struct node *) array;
-	if (root->index == -1 && !root->next)
-		return -1;
 	if (root->next)
 	{
 		destroy_array(root->next);
-		free(root->next);
+		root->next = NULL;
 	}
-	root->next = NULL;
-
+	free(root);
 	return 0;
 }

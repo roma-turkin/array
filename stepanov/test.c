@@ -5,17 +5,22 @@
 
 #define ERROR() printf("Error in %s on line %d\n", __FILE__, __LINE__);
 
-
 void quickSort(ARRAY*, long, long);
 
 int main(int argc, char *argv[])
 {
+	int el = 1, *get_el, result;
+	/* Test #0 */
+	// Quick create-destroy
+	ARRAY array = create_array();				if (array == NULL) ERROR();
+	result = destroy_array(array);				if (result == -1) ERROR();
+	
 	/* Test #1 */
 	// Normal test for create, insert, get, destroy
-	int el = 1, *get_el, result;
-	ARRAY array = create_array();				if (array == NULL) ERROR();
+	array = create_array();						if (array == NULL) ERROR();
 	result = insert(array, 0, &el);				if (result != 0) ERROR();
 	get_el = (int *)get(array, 0);				if (el != *get_el) ERROR();
+	get_el = (int *)get(array, -100);			if (get_el != NULL) ERROR();
 	result = destroy_array(array);				if (result == -1) ERROR();
 
 	/* Test #2 */
@@ -41,7 +46,7 @@ int main(int argc, char *argv[])
 	result = destroy_array(array); 				if (result == -1) ERROR();
 
 	/* Test #3 */
-
+	// Coming soon...
 
 	return 0;
 }
@@ -64,7 +69,6 @@ void quickSort(ARRAY *s_array, long first, long last)
 			if (i < j)
 			{
 				temp = (float *)get(s_array, i);
-				//if ( temp != NULL ) ERROR();
 				result = insert(s_array, i, (float *)get(s_array, j));
 				if (result != 0) ERROR();
 				result = insert(s_array, j, temp);

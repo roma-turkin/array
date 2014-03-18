@@ -53,10 +53,10 @@ struct elem * next(struct elem * x)
     return y;
 }
 
-
 int insert(ARRAY arr, INDEX key_t, DATA value_t)
 {
     struct elem * root = (struct elem *) arr;
+    if (key_t < 0) return -1;
     if (key_t > root -> key)
     {
         if (root -> right_child != NULL)
@@ -98,18 +98,18 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         if (root -> right_child != NULL && root -> left_child != NULL)
         {
             y = next(root);
-            x = NULL;
             if (y == y->parent->left_child)
                 y->parent->left_child = NULL;
             else
                 y->parent->right_child = NULL;
             root -> key = y -> key;
             root -> value = y -> value;
-            free(root);
+            free(y);
+            return 0;
         }
         else if (root -> left_child != NULL || root -> right_child != NULL)
         {
-            y = root;
+            y = root; //y - the element which should be deleted, x - his child
             if (y -> left_child != NULL)
                 x = y -> left_child;
             else
@@ -120,18 +120,30 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
             y = root;
             x = NULL;
         }
+        //putting x instead of y
         if (x != NULL)
             x -> parent = y -> parent;
         if (y -> parent == NULL)
-            arr = (void *) x;
+        {
+            y -> value = x -> value;
+            y -> key = x -> key;
+            y -> left_child = NULL;
+            y -> right_child = NULL;
+            free(x);
+            return 0;
+        }
         else
         {
+            //y -> key = x -> key;
+            //y -> value = x -> value;
             if (y == y->parent->left_child)
                 y->parent->left_child = x;
             else
                 y->parent->right_child = x;
+            if (x!=NULL) free(x);
+            free(y);
+            return 0;
         }
-        free(root);
     }
     return 0;
 }
@@ -139,7 +151,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
 int destroy_array(ARRAY arr)
 {
     struct elem * root = (struct elem *) arr;
-    if (root == NULL) return;
+    if (root == NULL) return -1;
     destroy_array(root->left_child);
     free(root);
     destroy_array(root->right_child);

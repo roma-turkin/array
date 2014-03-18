@@ -1,16 +1,34 @@
 #include "../array.h"
 #include <stdio.h>
+#include <time.h>
 
 int main()
 {
     ARRAY arr = create_array();
-    int a=1, b=2, c=6;
-    insert(arr, 0, &a);
-    insert(arr, 3, &b);
-    DATA res = get(arr, 38);
-    if (res == NULL) printf("FAIL GET");
-    else printf("%d\n", *(int *)res);
-    destroy_array(arr);
-    destroy_array(arr);
+    int a[100], b=2, c=6, i, res;
+    srand(time(NULL));
+    for(i=0;i<100;i++) 
+    {
+        a[i] = rand() % 100;
+        printf("%d ", a[i]);
+        insert(arr, i, &a[i]);
+    }
+    for(i=0;i<100;i++) printf("%d\n", *(int *) get(arr, i));
+    for(i=0;i<10;i++) insert(arr, i, NULL);
+    res = destroy_array(arr);
+    printf("%d\n", res);
+    /*for(i=0;i<10;i++)
+    {
+        one = *(int *) get(arr, i);
+        for(j=i;j<10;j++)
+        {
+            two = *(int *) get(arr, j);
+            if (two < one)
+            {
+                insert(arr,i,&two);
+                insert(arr,j,&one);
+            }
+        }
+    }*/
     return 0;
 }

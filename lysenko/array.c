@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//single node
 struct elem{
     DATA value;
     INDEX key;
     struct elem *left_child, *right_child, *parent;
 };
 
+//creating the array - the first node of the tree(root)
 ARRAY create_array(){
     struct elem *root;
     root = malloc(sizeof(struct elem));
@@ -20,6 +22,7 @@ ARRAY create_array(){
     return root;
 }
 
+//recursive search for the element
 DATA get(ARRAY arr, INDEX x)
 {
     struct elem * root = (struct elem *) arr;
@@ -33,6 +36,7 @@ DATA get(ARRAY arr, INDEX x)
         return get(root -> right_child, x);
 }
 
+//two service functions
 struct elem * minimum(struct elem * x)
 {
     if (x -> left_child == NULL)
@@ -53,6 +57,7 @@ struct elem * next(struct elem * x)
     return y;
 }
 
+//insert with smart deleting
 int insert(ARRAY arr, INDEX key_t, DATA value_t)
 {
     struct elem * root = (struct elem *) arr;
@@ -148,6 +153,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
     return 0;
 }
 
+//recursive destroy
 int destroy_array(ARRAY arr)
 {
     struct elem * root = (struct elem *) arr;

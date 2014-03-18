@@ -98,8 +98,8 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
     }
     if (key_t == root -> key && value_t == NULL) //deleting element
     {
-        struct elem * x = malloc(sizeof(struct elem));
-        struct elem * y = malloc(sizeof(struct elem));
+        struct elem * x ;//= malloc(sizeof(struct elem));
+        struct elem * y ;//= malloc(sizeof(struct elem));
         if (root -> right_child != NULL && root -> left_child != NULL)
         {
             y = next(root);
@@ -109,7 +109,8 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
                 y->parent->right_child = NULL;
             root -> key = y -> key;
             root -> value = y -> value;
-            free(y);
+            //free(y);
+                //free(x);
             return 0;
         }
         else if (root -> left_child != NULL || root -> right_child != NULL)
@@ -136,7 +137,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
             //y -> right_child = NULL;
             y -> left_child = x -> left_child;
             y -> right_child = x -> right_child;
-            free(x);
+            //free(x);
             return 0;
         }
         else
@@ -147,8 +148,8 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
                 y->parent->left_child = x;
             else
                 y->parent->right_child = x;
-            if (x!=NULL) free(x);
-            free(y);
+            //if (x!=NULL) free(x);
+            //free(y);
             return 0;
         }
     }
@@ -161,8 +162,8 @@ int destroy_array(ARRAY arr)
     struct elem * root = (struct elem *) arr;
     if (root == NULL) return -1;
     destroy_array(root->left_child);
-    free(root);
     destroy_array(root->right_child);
+    free(root);
     return 0;
 }
 

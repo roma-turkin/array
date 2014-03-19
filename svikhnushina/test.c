@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define COUNT   10
+#define COUNT   1
 
 /* sort array */
 void sort_array(ARRAY array, int size)

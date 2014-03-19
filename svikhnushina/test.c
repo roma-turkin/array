@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define COUNT   1
+#define COUNT  1 
 #define ERROR {printf("Error in %s on line %d\n",__FILE__,__LINE__); res = -1;};
 
 /* sort array */

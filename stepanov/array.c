@@ -11,50 +11,38 @@ struct node
 
 ARRAY create_array() 
 {
-	struct node * root;
-	root = malloc(sizeof(struct node));
-	root->index = -1;
-	root->data = NULL;
-	root->next = NULL;
-	return (root != NULL) ? root : NULL;
+	struct node * current;
+	current = malloc(sizeof(struct node));
+	current->index = 0;
+	current->data = NULL;
+	return (current != NULL) ? current : NULL;
 }
 
 int insert(ARRAY array, INDEX index, DATA data) 
 {
 	if ( index < 0 ) return -1;
 
-	struct node * root;
-	struct node * leaf;
 	struct node * current;
 
-	root = (struct node *) array;
+	current = (struct node *) array;
 
-	leaf = malloc(sizeof(struct node));
-	if ( !leaf ) return -1;
-
-	leaf->index = index;
-	leaf->data = data;
-	leaf->next = NULL;
-
-	if ( !(root->next) )
-	{
-		root->next = leaf;
-		return 0;
-	}
-	
-	current = root->next;
-	while (1)
+	while (1)	
 	{
 		if (current->index == index)
 		{
 			current->data = data;
-			free(leaf);
 			break;
 		}
 		if ( current->next )
 			current = current->next;
 		else
 		{
+			struct node * leaf;
+			leaf = malloc(sizeof(struct node));
+			if ( !leaf ) return -1;
+			leaf->index = index;
+			leaf->data = data;
+			leaf->next = NULL;
 			current->next = leaf;
 			break;
 		}
@@ -84,13 +72,13 @@ int destroy_array(ARRAY array)
 {
 	if (!array) return -1;
 
-	struct node * root;
-	root = (struct node *) array;
-	if (root->next)
+	struct node * current;
+	current = (struct node *) array;
+	if (current->next)
 	{
-		destroy_array(root->next);
-		root->next = NULL;
+		destroy_array(current->next);
+		current->next = NULL;
 	}
-	free(root);
+	free(current);
 	return 0;
 }

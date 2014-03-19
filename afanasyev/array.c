@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "array.h"
 
 struct Node                      //Array element
@@ -19,7 +20,8 @@ struct array                     //Array descriptor
 };
 
 struct array * ad;               //The main pointer!
-int nad = 0;                     //Number of arrays
+int nad = 0;                     //Number of created arrays
+int num = 0;                     //Number of arrays
 char balancing = 0;              //Pss, guy! Do u need some balancing?
 char waiting = 0;                //Ehm...
 struct Node * targ;              //Target node for inserting
@@ -169,6 +171,7 @@ void * create_array()
 	ad[nad].exists = 1;
 	ad[nad].nel = 0;
 	nad++;
+	num++;
 	return (void *) (nad - 1);
 }
 
@@ -253,5 +256,11 @@ int destroy_array(void * arr)
 		if (ad[ar].exists == 0) return -1;
 	remove_branch(ad[ar].ptr);
 	ad[ar].exists = 0;
+	num--;
+	if (num == 0)
+	{
+		nad = 0;          //If all arrays are destroyed, memory of
+		free(ad);         //main pointer will be disposed
+	}
 	return 0;
 }

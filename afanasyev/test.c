@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "array.h"
-#define Error {printf("Error in %s on line %d; p = %d\n", __FILE__, __LINE__, p); ret = -1;}
+#define Error {printf("Error in %s on line %d; p = %ld\n", __FILE__, __LINE__, p); ret = -1;}
 
 int main()
 {
@@ -27,28 +27,28 @@ int main()
 	if (insert(a1, 1, (void *) 4) != 0) Error
 	if (insert(a1, 2, (void *) 5) != 0) Error
 
-	if ((int) get(a1, -2) != 0) Error
-	if ((int) get(a1, -1) != 0) Error
-	if ((int) get(a1, 0) != 3) Error
-	if ((int) get(a1, 1) != 4) Error
-	if ((int) get(a1, 2) != 5) Error
+	if (get(a1, -2) != (void *) 0) Error
+	if (get(a1, -1) != (void *) 0) Error
+	if (get(a1, 0) != (void *) 3) Error
+	if (get(a1, 1) != (void *) 4) Error
+	if (get(a1, 2) != (void *) 5) Error
 
 	//Second array: checking secuential filling with sequential numbers
 
 	for (p = 1; p <= 26; p++)
-		if (insert(a2, p, (void *) p) != 0) Error
+		if (insert(a2, p, &(m[p])) != 0) Error
 	for (p = 1; p <= 26; p++)
-		if (get(a2, p) != (void *) p) Error
+		if (get(a2, p) != &(m[p])) Error
 
-	//Third array: checking random filling with secuential numbers
+	//Third array: checking random filling with sequential numbers
 
 	for (p = 0; p < 30; p++)
 	{
 		m[p] = rand() % 100000;
-		if (insert(a3, m[p], (void *) p) != 0) Error
+		if (insert(a3, m[p], &(m[p])) != 0) Error
 	}
 	for (p=0; p<30; p++)
-		if (get(a3, m[p]) != (void *) p) Error
+		if (get(a3, m[p]) != &(m[p])) Error
 
 	//Array of arrays: I need A LOT OF arrays
 
@@ -58,17 +58,27 @@ int main()
 		if (a[p] == NULL) Error
 	}
 	for (p = 1; p <= 26; p++)
-		if (insert(a[p], p, (void *) p) != 0) Error
+		if (insert(a[p], p, (void *) &p) != 0) Error
 	for (p = 1; p <= 26; p++)
-		if ((int) get(a[p], p) != p) Error
+		if (get(a[p], p) != &p) Error
 	for (p = 1; p <= 26; p++)
 		if (destroy_array(a[p]) != 0) Error
 
-	if ((int) get(a1, 1) != 4) Error
-	if ((int) get(a2, 1) != 1) Error
+	//Checking "permanent set" and disposing everything
+
+	if (get(a1, 1) != (void *) 4) Error
+	if (get(a2, 1) != &(m[1])) Error
 	if (destroy_array(a1) != 0) Error
 	if (destroy_array(a2) != 0) Error
 	if (destroy_array(a3) != 0) Error
+
+	//The last test: some exotic situations
+
+	a1 = create_array();   if (a1 == NULL) Error
+	if (get(a1, 10) != NULL) Error
+	if (insert(a1, 5, (void *) 5) != 0) Error
+	if (insert(a1, 5, (void *) 5) != 0) Error
+	if (destroy_array(a1) != 0) Error
 
 	return ret;
 }

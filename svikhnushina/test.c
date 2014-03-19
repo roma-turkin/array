@@ -7,6 +7,7 @@
 #define ERROR {printf("Error in %s on line %d\n",__FILE__,__LINE__); res = -1;};
 
 /* sort array */
+int res = 0;
 void sort_array(ARRAY array, int size)
 {
     int i, j, val1, val2;
@@ -32,7 +33,6 @@ void sort_array(ARRAY array, int size)
 
 int main()
 {
-	int res = 0;
     ARRAY array1 = create_array();
     ARRAY array2 = create_array();
     int i, size, cleared, val1, val2, cnt;

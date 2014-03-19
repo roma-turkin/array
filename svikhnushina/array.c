@@ -71,14 +71,16 @@ int insert(ARRAY arr, INDEX ind, DATA dat)
                 current = &(*current)->left;
                 continue;
             }
-            if ( !dat ) return -1;
+//            if ( !dat ) return -1;
+            if ( !dat ) return 0;
             if ( !((*current)->left = node_alloc(ind, dat)) ) return -1;
         } else {
             if ( (*current)->right ) {
                 current = &(*current)->right;
                 continue;
             }
-            if ( !dat ) return -1;
+//            if ( !dat ) return -1;
+            if ( !dat ) return 0;
             if ( !((*current)->right = node_alloc(ind, dat)) ) return -1;
         }
         return 0;

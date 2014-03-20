@@ -119,7 +119,6 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         }
         if (y -> parent == NULL)
         {
-            //printf("ROOT");
             y -> left_child = x -> left_child;
             y -> right_child = x -> right_child;
             y -> key = x -> key;

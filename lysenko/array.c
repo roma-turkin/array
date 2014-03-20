@@ -96,7 +96,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
               return 0;
         }
     }
-    if (key_t == root -> key) //&& value_t != NULL)
+    if (key_t == root -> key && value_t != NULL)
     {
         root -> value = value_t;
     }
@@ -108,13 +108,19 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         else y = next(root);
         if (y->left_child != NULL) x = y -> left_child;
         else x = y -> right_child;
+        printf("y = %d\n", y -> key);
         if (x != NULL) x -> parent = y -> parent;
         if (y -> parent == NULL)
         {
-            //y -> left_child = x -> left_child;
-            //y -> right_child = x -> right_child;
+            printf("ROOT");
+            y -> left_child = x -> left_child;
+            y -> right_child = x -> right_child;
             y -> key = x -> key;
             y -> value = x -> value;
+            x -> right_child -> parent = y;
+            x -> left_child -> parent = y;
+            free(x);
+            return 0;
             //if (x == x->parent->left_child) x -> parent->left_child = NULL;
             //else x -> parent -> right_child = NULL;
             //free(x);
@@ -126,7 +132,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
             root -> key = y -> key;
             root -> value = y -> value;
         }
-        //free(y);
+        free(y);
     }
     return 0;
 }
@@ -136,9 +142,8 @@ int destroy_array(ARRAY arr)
 {
     struct elem * root = (struct elem *) arr;
     if (root == NULL) return -1;
-    /*if (root -> left_child != NULL)*/ destroy_array(root->left_child);
-    /*if (root -> right_child != NULL)*/ destroy_array(root->right_child);
-    //printf("%d ", root->key);
+    destroy_array(root->left_child);
+    destroy_array(root->right_child);
     free(root);
     return 0;
 }

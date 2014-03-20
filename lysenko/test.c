@@ -6,7 +6,7 @@
 
 int main()
 {
-    int a[100], b, i, res,index[10] = {10, 2, 12, 3, 4, 65, 13, 1, 5, 80};
+    int a[100], b=5, i, res,index[10] = {10, 2, 12, 3, 4, 65, 13, 1, 5, 80};
     int test_result = 0;
     srand(time(NULL));
     //Test #1
@@ -55,8 +55,8 @@ int main()
     }
     res = destroy_array(arr);
     if (res == -1) ERROR
-    /*//Test #4
-    ARRAY arr = create_array();
+    //Test #4
+    /*arr = create_array();
     for(i=0;i<1000;i++)
     {
         insert()
@@ -72,6 +72,16 @@ int main()
             }
         }
     }*/
+    ARRAY array = create_array();
+    insert(array, 10, &b);
+    insert(array, 2, &b);
+    insert(array, 12, &b);
+    insert(array, 14, &b);
+    insert(array, 11, &b);
+    insert(array, 1, &b);
+    insert(array, 5, &b);
+    insert(array, 16, &b);
+    insert(array, 2, NULL);
+    destroy_array(array);
     return test_result;
-    return 0;
 }

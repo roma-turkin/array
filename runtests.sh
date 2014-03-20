@@ -16,7 +16,7 @@ do
 		COMPILATION_ERRORS="No errors occured"
 		if [ $(stat -c %s error_log) -ne 0 ]
 		then 
-			COMPILATION_ERRORS="ERROR! Recompile to check"
+			COMPILATION_ERRORS="Warnings! Recompile to check"
 		fi
 		echo $ARRAY_FOLDER_NAME "|" $TEST_FOLDER_NAME "|" "Returned value " $RESULT "|" $COMPILATION_ERRORS
 	done

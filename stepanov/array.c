@@ -15,6 +15,7 @@ ARRAY create_array()
 	current = malloc(sizeof(struct node));
 	current->index = 0;
 	current->data = NULL;
+	current->next = NULL;
 	return (current != NULL) ? current : NULL;
 }
 
@@ -23,7 +24,6 @@ int insert(ARRAY array, INDEX index, DATA data)
 	if ( index < 0 ) return -1;
 
 	struct node * current;
-
 	current = (struct node *) array;
 
 	while (1)	
@@ -74,6 +74,7 @@ int destroy_array(ARRAY array)
 
 	struct node * current;
 	current = (struct node *) array;
+
 	if (current->next)
 	{
 		destroy_array(current->next);

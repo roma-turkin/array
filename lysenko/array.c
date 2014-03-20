@@ -108,11 +108,11 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         else y = next(root);
         if (y->left_child != NULL) x = y -> left_child;
         else x = y -> right_child;
-        printf("y = %d\n", y -> key);
+        //printf("y = %d\n", y -> key);
         if (x != NULL) x -> parent = y -> parent;
         if (y -> parent == NULL)
         {
-            printf("ROOT");
+            //printf("ROOT");
             y -> left_child = x -> left_child;
             y -> right_child = x -> right_child;
             y -> key = x -> key;

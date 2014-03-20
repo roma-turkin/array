@@ -76,7 +76,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
             new -> key = key_t;
             new -> left_child = NULL;
             new -> right_child = NULL;
-              return 0;
+            return 0;
         }
     }
     if (key_t < root -> key)
@@ -93,7 +93,7 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
             new -> key = key_t;
             new -> right_child = NULL;
             new -> left_child = NULL;
-              return 0;
+            return 0;
         }
     }
     if (key_t == root -> key && value_t != NULL)
@@ -104,12 +104,19 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
     {
         struct elem *y;
         struct elem *x;
-        if (root->left_child == NULL || root->right_child == NULL) y = root;
+        if (root->left_child == NULL || root->right_child == NULL) 
+            y = root;
         else y = next(root);
-        if (y->left_child != NULL) x = y -> left_child;
+        if (y->left_child != NULL) 
+            x = y -> left_child;
         else x = y -> right_child;
-        //printf("y = %d\n", y -> key);
-        if (x != NULL) x -> parent = y -> parent;
+        if (x != NULL) 
+            x -> parent = y -> parent;
+        if (y -> parent == NULL && x == NULL) 
+        {
+            y -> value = NULL;
+            return 0;
+        }
         if (y -> parent == NULL)
         {
             //printf("ROOT");
@@ -117,15 +124,15 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
             y -> right_child = x -> right_child;
             y -> key = x -> key;
             y -> value = x -> value;
-            x -> right_child -> parent = y;
-            x -> left_child -> parent = y;
+            if (x -> right_child != NULL) 
+                x -> right_child -> parent = y;
+            if (x -> left_child != NULL) 
+                x -> left_child -> parent = y;
             free(x);
             return 0;
-            //if (x == x->parent->left_child) x -> parent->left_child = NULL;
-            //else x -> parent -> right_child = NULL;
-            //free(x);
         }
-        else if (y == y -> parent-> left_child) y -> parent -> left_child = x;
+        else if (y == y -> parent-> left_child) 
+            y -> parent -> left_child = x;
         else y -> parent -> right_child = x;
         if (y != root) 
         {

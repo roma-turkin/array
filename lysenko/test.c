@@ -56,22 +56,6 @@ int main()
     res = destroy_array(arr);
     if (res == -1) ERROR
     //Test #4
-    /*arr = create_array();
-    for(i=0;i<1000;i++)
-    {
-        insert()
-    for(i=0;i<1000;i++)
-    {
-        one = *(int *) get(arr, i);  for(j=i;j<10;j++)
-        {
-            two = *(int *) get(arr, j);
-            if (two < one)
-            {
-                insert(arr,i,&two);
-                insert(arr,j,&one);
-            }
-        }
-    }*/
     ARRAY array = create_array();
     insert(array, 10, &b);
     insert(array, 2, &b);
@@ -81,7 +65,18 @@ int main()
     insert(array, 1, &b);
     insert(array, 5, &b);
     insert(array, 16, &b);
-    insert(array, 2, NULL);
+    insert(array, 0, NULL);
+    insert(array, 120, NULL);
+    insert(array, 10, NULL);
+    destroy_array(array);
+    //Test #5
+    array = create_array();
+    insert(array, 0, &b);
+    insert(array, 1, &b);
+    insert(array, 2, &b);
+    insert(array, 3, &b);
+    insert(array, 10, &b);
+    insert(array, 0, NULL);
     destroy_array(array);
     return test_result;
 }

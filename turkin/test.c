@@ -18,7 +18,6 @@ int main()
     res_el = get(array,0);               if (res_el == NULL) ERROR     //"Вытаскивание" элемента 0 из массива. Если элемента нет, это хреново
                                          if (el != *res_el)  ERROR     //"Вытаскивание" чего-то другого - тоже не айс
     result = destroy_array(array);       if (result == -1)   ERROR
-//    result = destroy_array(array);       if (result != -1)   ERROR     //Должно возвращаться -1. Мы уже почистили этот массив. 
     array = create_array();              if (array == NULL)  ERROR     //Массив должен создаться без проблем
     //Все то же самое, что и выше - должно работать нормально
     el = 10;
@@ -30,7 +29,7 @@ int main()
     array = create_array();              if (array == NULL)  ERROR 
     result = insert(array,-1,&el);       if (result == 0)    ERROR     //Ожидается ошибка. Нет отрицательных индексов.
     res_el = get(array,-1);              if (res_el != NULL) ERROR     //То же
-    result = destroy_array(array);       if (result != 0)    ERROR     //Ожидается ошибка. В массив мы ничего не положили.
+    result = destroy_array(array);       if (result != 0)    ERROR     //Удаление объявленного, но пустого массива.
     result = destroy_array(NULL);		 if (result == 0) 	 ERROR 	   //А что, надо же бранч проверить
 
 //Тест #2: сортировка массива. Задача: ввести массив, отсортировать и убедиться, что он отсортирован.

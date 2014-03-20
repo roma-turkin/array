@@ -21,7 +21,8 @@ ARRAY create_array()
 
 int insert(ARRAY array, INDEX index, DATA data) 
 {
-	if ( index < 0 ) return -1;
+	if (index < 0) 
+		return -1;
 
 	struct node * current;
 	current = (struct node *) array;
@@ -33,13 +34,13 @@ int insert(ARRAY array, INDEX index, DATA data)
 			current->data = data;
 			break;
 		}
-		if ( current->next )
+		if (current->next)
 			current = current->next;
 		else
 		{
 			struct node * leaf;
 			leaf = malloc(sizeof(struct node));
-			if ( !leaf ) return -1;
+			if (!leaf) return -1;
 			leaf->index = index;
 			leaf->data = data;
 			leaf->next = NULL;
@@ -52,7 +53,7 @@ int insert(ARRAY array, INDEX index, DATA data)
 
 DATA get(ARRAY array, INDEX index) 
 {
-	if ( index < 0 || !(array) )
+	if (index < 0 || !(array))
 		return NULL;
 	
 	struct node * current;
@@ -62,15 +63,17 @@ DATA get(ARRAY array, INDEX index)
 	{
 		if (current->index == index)
 			return current->data;
-		if ( current->next )
+		if (current->next)
 			current = current->next;
-		else return NULL;		
+		else 
+			return NULL;		
 	}
 }
 
 int destroy_array(ARRAY array) 
 {
-	if (!array) return -1;
+	if (!array) 
+		return -1;
 
 	struct node * current;
 	current = (struct node *) array;

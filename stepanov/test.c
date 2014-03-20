@@ -54,7 +54,6 @@ int main(int argc, char *argv[])
 	float minus = -50.8;
 	result = insert(array, 23, &minus);			if (result != 0) ERROR
 	get_fl = (float *) get(array, 23);			if (*get_fl != minus) ERROR
-	// printf("%f\n", *get_fl);
 	get_int = (int *) get(array, -100);			if (get_int != NULL) ERROR
 	result = destroy_array(array);				if (result != 0) ERROR
 

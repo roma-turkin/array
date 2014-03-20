@@ -49,7 +49,7 @@ struct elem * next(struct elem * x)
     if (x -> right_child != NULL)
         return minimum(x -> right_child);
     struct elem * y = x -> parent;
-    while (y != NULL && x== y -> left_child)
+    while (y != NULL && x== y -> right_child)
     {
         x = y;
         y = y -> parent;
@@ -69,12 +69,14 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         else
         {
             struct elem *new = malloc(sizeof(struct elem));
+            if (!new) return -1;
             new -> parent = root;
             root -> right_child = new;
             new -> value = value_t;
             new -> key = key_t;
             new -> left_child = NULL;
             new -> right_child = NULL;
+              return 0;
         }
     }
     if (key_t < root -> key)
@@ -84,74 +86,47 @@ int insert(ARRAY arr, INDEX key_t, DATA value_t)
         else
         {
             struct elem *new = malloc(sizeof(struct elem));
+            if (!new) return -1;
             new -> parent = root;
             root -> left_child = new;
             new -> value = value_t;
             new -> key = key_t;
             new -> right_child = NULL;
             new -> left_child = NULL;
+              return 0;
         }
     }
-    if (key_t == root -> key && value_t != NULL)
+    if (key_t == root -> key) //&& value_t != NULL)
     {
         root -> value = value_t;
     }
     if (key_t == root -> key && value_t == NULL) //deleting element
     {
-        struct elem * x ;//= malloc(sizeof(struct elem));
-        struct elem * y ;//= malloc(sizeof(struct elem));
-        if (root -> right_child != NULL && root -> left_child != NULL)
-        {
-            y = next(root);
-            if (y == y->parent->left_child)
-                y->parent->left_child = NULL;
-            else
-                y->parent->right_child = NULL;
-            root -> key = y -> key;
-            root -> value = y -> value;
-            //free(y);
-                //free(x);
-            return 0;
-        }
-        else if (root -> left_child != NULL || root -> right_child != NULL)
-        {
-            y = root; //y - the element which should be deleted, x - his child
-            if (y -> left_child != NULL)
-                x = y -> left_child;
-            else
-                x = y -> right_child;
-        }
-        else
-        {
-            y = root;
-            x = NULL;
-        }
-        //putting x instead of y
-        if (x != NULL)
-            x -> parent = y -> parent;
+        struct elem *y;
+        struct elem *x;
+        if (root->left_child == NULL || root->right_child == NULL) y = root;
+        else y = next(root);
+        if (y->left_child != NULL) x = y -> left_child;
+        else x = y -> right_child;
+        if (x != NULL) x -> parent = y -> parent;
         if (y -> parent == NULL)
         {
-            y -> value = x -> value;
+            //y -> left_child = x -> left_child;
+            //y -> right_child = x -> right_child;
             y -> key = x -> key;
-            //y -> left_child = NULL;
-            //y -> right_child = NULL;
-            y -> left_child = x -> left_child;
-            y -> right_child = x -> right_child;
+            y -> value = x -> value;
+            //if (x == x->parent->left_child) x -> parent->left_child = NULL;
+            //else x -> parent -> right_child = NULL;
             //free(x);
-            return 0;
         }
-        else
+        else if (y == y -> parent-> left_child) y -> parent -> left_child = x;
+        else y -> parent -> right_child = x;
+        if (y != root) 
         {
-            //y -> key = x -> key;
-            //y -> value = x -> value;
-            if (y == y->parent->left_child)
-                y->parent->left_child = x;
-            else
-                y->parent->right_child = x;
-            //if (x!=NULL) free(x);
-            //free(y);
-            return 0;
+            root -> key = y -> key;
+            root -> value = y -> value;
         }
+        //free(y);
     }
     return 0;
 }
@@ -161,8 +136,9 @@ int destroy_array(ARRAY arr)
 {
     struct elem * root = (struct elem *) arr;
     if (root == NULL) return -1;
-    destroy_array(root->left_child);
-    destroy_array(root->right_child);
+    /*if (root -> left_child != NULL)*/ destroy_array(root->left_child);
+    /*if (root -> right_child != NULL)*/ destroy_array(root->right_child);
+    //printf("%d ", root->key);
     free(root);
     return 0;
 }

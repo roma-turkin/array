@@ -57,26 +57,45 @@ int main()
     if (res == -1) ERROR
     //Test #4
     ARRAY array = create_array();
-    insert(array, 10, &b);
-    insert(array, 2, &b);
-    insert(array, 12, &b);
-    insert(array, 14, &b);
-    insert(array, 11, &b);
-    insert(array, 1, &b);
-    insert(array, 5, &b);
-    insert(array, 16, &b);
-    insert(array, 0, NULL);
-    insert(array, 120, NULL);
-    insert(array, 10, NULL);
-    destroy_array(array);
+    res = insert(array, 10, &b);
+    if (res == -1) ERROR
+    res = insert(array, 2, &b);
+    if (res == -1) ERROR
+    res = insert(array, 12, &b);
+    if (res == -1) ERROR
+    res = insert(array, 14, &b);
+    if (res == -1) ERROR
+    res = insert(array, 11, &b);
+    if (res == -1) ERROR
+    res = insert(array, 1, &b);
+    if (res == -1) ERROR
+    res = insert(array, 5, &b);
+    if (res == -1) ERROR
+    res = insert(array, 16, &b);
+    if (res == -1) ERROR
+    res = insert(array, 0, NULL);
+    if (res == -1) ERROR
+    res = insert(array, 120, NULL);
+    if (res == -1) ERROR
+    res = insert(array, 10, NULL);
+    if (res == -1) ERROR
+    res = destroy_array(array);
+    if (res == -1) ERROR
     //Test #5
     array = create_array();
-    insert(array, 0, &b);
-    insert(array, 1, &b);
-    insert(array, 2, &b);
-    insert(array, 3, &b);
-    insert(array, 10, &b);
-    insert(array, 0, NULL);
-    destroy_array(array);
+    res = insert(array, 0, &b);
+    if (res == -1) ERROR
+    res = insert(array, 1, &b);
+    if (res == -1) ERROR
+    res = insert(array, 2, &b);
+    if (res == -1) ERROR
+    res = insert(array, 3, &b);
+    if (res == -1) ERROR
+    res = insert(array, 10, &b);
+    if (res == -1) ERROR
+    res = insert(array, 0, NULL);
+    if (res == -1) ERROR
+    res = destroy_array(array);
+    if (res == -1) ERROR
     return test_result;
 }
